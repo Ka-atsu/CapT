@@ -1,0 +1,10 @@
+/* LessonSidebar.module.css */
+
+/* We lock the padding and spacing in here to bypass Tailwind's compiler */
+.innerWrapper {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Equivalent to gap-10 */
+  min-height: 100%;
+}

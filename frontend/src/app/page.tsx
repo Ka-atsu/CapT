@@ -1,5 +1,5 @@
-import LessonPage from "../features/learn/lesson/LessonPage";
+import TopicPage from "../features/learn/topic/TopicPage";
 
 export default function Home() {
-  return <LessonPage />;
+  return <TopicPage />;
 }

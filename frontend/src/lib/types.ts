@@ -11,11 +11,35 @@ export type FillBlankExercise = {
   answer: string;
 };
 
-export type Exercise = MultipleChoiceExercise | FillBlankExercise;
+// Define the shape of a single interactive component/step
+export type LessonStep = {
+  label: string;
+  subtitle: string;
+  markdownContent: string;
+  imageUrl?: string; // NEW: Optional image for the interactive card
+  codeSnippet?: string; // NEW: Optional code block to show "Under the Hood"
+};
 
+// Define the introductory meta-data
+export type Briefing = {
+  coreConcept: string;
+  latencyImpact: string;
+  prerequisite: string;
+};
+
+// Define the final challenge
+export type Exercise = {
+  type: "multiple-choice" | "fill-blank";
+  prompt: string;
+  options?: string[];
+  answer: number | string;
+};
+
+// The main Lesson object
 export type Lesson = {
-  id: number;
+  id: number | string;
   title: string;
-  content: string;
+  briefing?: Briefing;
+  steps: LessonStep[];
   exercise: Exercise;
 };

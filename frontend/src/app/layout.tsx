@@ -8,9 +8,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-neutral-950 text-white">
+      {/* h-screen locks the body to the window size, flex-col stacks children vertically */}
+      <body className="bg-[#0B0B0C] text-white h-screen flex flex-col antialiased">
+        {/* The Navbar sits at the top and takes up its natural height */}
         <Navbar xp={120} />
-        {children}
+
+        {/* flex-1 takes up ALL remaining space under the Nav. overflow-y-auto makes THIS the scrollable area. */}
+        <div className="flex-1 w-full overflow-y-auto custom-scrollbar">
+          {children}
+        </div>
       </body>
     </html>
   );

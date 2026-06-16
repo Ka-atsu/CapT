@@ -1,0 +1,126 @@
+/* Topic.module.css */
+
+.pageContainer {
+  min-height: 100%; /* CHANGED from 100vh so it doesn't push past the navbar */
+  background-color: #070708;
+  padding: 80px 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.contentWrapper {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mainTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #a3a3a3; /* neutral-400 */
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  /* Auto-responsive grid: cards will be at least 320px wide, stretching to fill space */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* --- Card Styles --- */
+
+.card {
+  background-color: rgba(18, 18, 20, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(124, 58, 237, 0.4); /* violet-500 */
+  box-shadow: 0 12px 40px -12px rgba(124, 58, 237, 0.25);
+  background-color: rgba(20, 20, 22, 1);
+}
+
+.cardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.categoryTag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #a78bfa; /* violet-400 */
+}
+
+.cardTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f5f5f5;
+  line-height: 1.2;
+}
+
+.cardDesc {
+  font-size: 0.95rem;
+  color: #a3a3a3;
+  line-height: 1.6;
+  flex-grow: 1; /* Pushes the footer to the bottom */
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+}
+
+.metaInfo {
+  display: flex;
+  gap: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #737373; /* neutral-500 */
+}
+
+.actionBtn {
+  background-color: transparent;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.card:hover .actionBtn {
+  color: #a78bfa; /* violet-400 */
+}
