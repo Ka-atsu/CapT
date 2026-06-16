@@ -1,117 +1,118 @@
 /* LessonContent.module.css */
 
-.splitContainer {
-  display: flex;
-  flex-direction: column;
+.slideWrapper {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-@media (min-width: 768px) {
-  .splitContainer {
-    flex-direction: row;
-  }
-}
-
-/* --- Left Pane (Theory) --- */
-.theoryPane {
-  width: 100%;
-  padding: 32px;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  overflow-y: auto;
+  min-height: 100%;
+  padding: 48px 32px;
   display: flex;
-  flex-direction: column;
-  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
   background-color: #0b0b0c;
 }
 
-@media (min-width: 768px) {
-  .theoryPane {
-    width: 40%;
-    padding: 48px;
-  }
-}
-
-.briefingBox {
-  background-color: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* --- Right Pane (Interactive Sandbox) --- */
-.sandboxPane {
-  flex: 1;
-  padding: 32px;
-  background-color: #121214;
-  overflow-y: auto;
-  position: relative;
+.slideContent {
+  width: 100%;
+  max-width: 900px; /* Constrains the width to make it look like a presentation slide */
   display: flex;
   flex-direction: column;
   gap: 48px;
 }
 
-@media (min-width: 768px) {
-  .sandboxPane {
-    padding: 48px;
-  }
-}
-
-/* Interactive Grid & Cards */
-.cardGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 1280px) {
-  .cardGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.interactiveCard {
-  cursor: pointer;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 24px;
-  transition: all 0.2s ease;
-  background-color: #161618;
+.headerSection {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+  text-align: center;
 }
 
-.interactiveCard:hover {
-  background-color: #1a1a1d;
-  border-color: rgba(255, 255, 255, 0.15);
+.interactiveNodes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+  margin: 32px 0;
 }
 
-.cardSelected {
-  background-color: rgba(124, 58, 237, 0.05) !important;
-  border-color: rgba(124, 58, 237, 0.4) !important;
-  box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.2);
+/* The Clickable Circles */
+.nodeCircle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #1a273a; /* Dark blue from the screenshot */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 4px solid transparent;
 }
 
-.cardViewed {
-  opacity: 0.6;
+.nodeCircle:hover {
+  transform: translateY(-4px);
+  background-color: #23354e;
 }
 
-/* Reveal Panel (Under the Hood) */
-.revealPanel {
-  background-color: rgba(0, 0, 0, 0.5);
+.nodeSelected {
+  border-color: #7c3aed;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+  background-color: #23354e;
+}
+
+.nodeIcon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 8px;
+}
+
+.nodeSubtitle {
+  font-weight: 700;
+  font-size: 14px;
+  color: #f5f5f5;
+  margin-top: 12px;
+}
+
+/* The white checkmark badge at the bottom of the circle */
+.checkBadge {
+  position: absolute;
+  bottom: -12px;
+  background-color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.checkBadge svg {
+  width: 16px;
+  height: 16px;
+  color: #0ea5e9; /* Light blue tick */
+  stroke-width: 3;
+}
+
+/* The text reveal area below the circles */
+.revealArea {
+  background-color: #121214;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
-  padding: 32px;
-  animation: slideUp 0.3s ease forwards;
+  padding: 40px;
+  text-align: center;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: slideUp 0.4s ease forwards;
 }
 
-/* --- Gated Challenge Block --- */
+/* Challenge Block */
 .challengeContainer {
+  margin-top: 32px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding-top: 48px;
   display: flex;
@@ -120,36 +121,21 @@
   animation: slideUp 0.5s ease forwards;
 }
 
-.panelWrapper {
-  position: relative;
-}
-
-.panelLine {
-  position: absolute;
-  left: -16px;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  border-radius: 9999px;
-  background: linear-gradient(to bottom, #7c3aed, #c026d3);
-}
-
-.successBox {
-  margin-top: 16px;
-  background-color: rgba(16, 185, 129, 0.1); /* Emerald 500 at 10% */
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  padding: 24px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  animation: slideUp 0.3s ease forwards;
+@keyframes popIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;

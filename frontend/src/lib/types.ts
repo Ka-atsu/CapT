@@ -16,8 +16,9 @@ export type LessonStep = {
   label: string;
   subtitle: string;
   markdownContent: string;
-  imageUrl?: string; // NEW: Optional image for the interactive card
-  codeSnippet?: string; // NEW: Optional code block to show "Under the Hood"
+  imageUrl?: string;
+  codeSnippet?: string;
+  icon?: "user" | "network" | "bank" | "server" | "shield"; // NEW: Icon identifier for the interactive circles
 };
 
 // Define the introductory meta-data

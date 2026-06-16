@@ -11,347 +11,258 @@ type Props = {
   isLast: boolean;
 };
 
+// Helper component to render the correct SVG based on the mock data
+const IconRenderer = ({ type }: { type?: string }) => {
+  switch (type) {
+    case "user":
+      return (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#84cc16"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={styles.nodeIcon}
+        >
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+      );
+    case "network":
+      return (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#f59e0b"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={styles.nodeIcon}
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      );
+    case "bank":
+      return (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#0ea5e9"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={styles.nodeIcon}
+        >
+          <rect x="2" y="20" width="20" height="2" />
+          <rect x="4" y="9" width="2" height="9" />
+          <rect x="10" y="9" width="2" height="9" />
+          <rect x="18" y="9" width="2" height="9" />
+          <polygon points="12 2 2 7 22 7 12 2" />
+        </svg>
+      );
+    case "server":
+      return (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#a855f7"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={styles.nodeIcon}
+        >
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+          <line x1="6" y1="6" x2="6.01" y2="6" />
+          <line x1="6" y1="18" x2="6.01" y2="18" />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#ef4444"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={styles.nodeIcon}
+        >
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      );
+    default:
+      return (
+        <div className={`${styles.nodeIcon} bg-neutral-700 rounded-full`} />
+      );
+  }
+};
+
 export default function LessonContent({ lesson, onNext, isLast }: Props) {
-  /*
-   * Learning Journey State
-   * ------------------------------------------------------------------
-   * Tracks learner progression within the current module.
-   *
-   * selectedStepIndex
-   *   Currently inspected architectural component.
-   *
-   * viewedSteps
-   *   Collection of components the learner has already explored.
-   *   Used to determine when the final challenge becomes available.
-   *
-   * solved
-   *   Indicates whether the learner successfully completed the
-   *   verification exercise.
-   */
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(
     null,
   );
   const [viewedSteps, setViewedSteps] = useState<Set<number>>(new Set());
   const [solved, setSolved] = useState(false);
 
-  /*
-   * Module Lifecycle Reset
-   * ------------------------------------------------------------------
-   * Every lesson should start in a clean state.
-   *
-   * When the active lesson changes:
-   * - Close any open inspection panel
-   * - Clear exploration history
-   * - Reset challenge completion
-   *
-   * This prevents progress from carrying over between modules.
-   */
   useEffect(() => {
     setSelectedStepIndex(null);
     setViewedSteps(new Set());
     setSolved(false);
   }, [lesson.id]);
 
-  /*
-   * Component Exploration Handler
-   * ------------------------------------------------------------------
-   * Opening a component serves two purposes:
-   *
-   * 1. Reveals its detailed explanation.
-   * 2. Marks it as explored for lesson completion tracking.
-   *
-   * A Set is used to prevent duplicate entries automatically.
-   */
   const handleStepClick = (index: number) => {
     setSelectedStepIndex(index);
     setViewedSteps((prev) => new Set(prev).add(index));
   };
 
-  /*
-   * Progress Gate
-   * ------------------------------------------------------------------
-   * The final challenge remains locked until every architectural
-   * component has been inspected.
-   *
-   * This ensures learners review all concepts before attempting
-   * the assessment.
-   */
   const hasCompletedAllSteps = viewedSteps.size === lesson.steps.length;
 
   return (
-    <div className={styles.splitContainer}>
-      {/*
-        Theory & Context Pane
-        ----------------------------------------------------------------
-        Provides the conceptual foundation for the lesson.
-
-        The left pane answers:
-        - Why does this system exist?
-        - What problem does it solve?
-        - What should the learner focus on?
-
-        Unlike the sandbox area, this content remains static and
-        serves as the learner's primary source of context.
-      */}
-      <section className={`${styles.theoryPane} custom-scrollbar`}>
-        <header className="flex flex-col gap-4">
-          <span className="text-violet-400 text-xs font-bold uppercase tracking-widest">
-            Module {lesson.id}
-          </span>
-
+    /* ADDED: h-full w-full overflow-y-auto so the main pane scrolls properly! */
+    <div
+      className={`h-full w-full overflow-y-auto custom-scrollbar ${styles.slideWrapper}`}
+    >
+      <div className={styles.slideContent}>
+        {/* Dynamic Header Section */}
+        <header className={styles.headerSection}>
           <h1 className="text-3xl lg:text-4xl font-black text-white leading-tight">
             {lesson.title}
           </h1>
+
+          {lesson.briefing && (
+            <div className="flex items-center justify-center gap-6 mt-2">
+              <p className="text-sm font-medium text-neutral-400 border border-neutral-800 bg-neutral-900/50 px-4 py-1.5 rounded-full">
+                Core Concept:{" "}
+                <span className="text-violet-400 font-bold">
+                  {lesson.briefing.coreConcept}
+                </span>
+              </p>
+              <p className="text-sm font-medium text-neutral-400 border border-neutral-800 bg-neutral-900/50 px-4 py-1.5 rounded-full">
+                Impact:{" "}
+                <span className="text-emerald-400 font-bold">
+                  {lesson.briefing.latencyImpact}
+                </span>
+              </p>
+            </div>
+          )}
+
+          <p className="text-xs font-bold text-neutral-500 mt-6 uppercase tracking-widest animate-pulse">
+            Select the icons to explore the architecture
+          </p>
         </header>
 
-        {/*
-          Mission Briefing
-          ----------------------------------------------------------------
-          Presents the key learning objectives before exploration begins.
-
-          Core Concept:
-            Primary technical principle being introduced.
-
-          Impact Metric:
-            Real-world engineering outcome affected by the concept.
-
-          Prerequisites:
-            Knowledge expected before starting the lesson.
-        */}
-        {lesson.briefing && (
-          <div className={styles.briefingBox}>
-            <div>
-              <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold block mb-1">
-                Target Concept
-              </span>
-
-              <span className="text-emerald-400 font-mono text-sm">
-                {lesson.briefing.coreConcept}
-              </span>
-            </div>
-
-            <div>
-              <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold block mb-1">
-                Impact Metric
-              </span>
-
-              <span className="text-neutral-300 text-sm">
-                {lesson.briefing.latencyImpact}
-              </span>
-            </div>
-
-            <div>
-              <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold block mb-1">
-                Prerequisites
-              </span>
-
-              <span className="text-amber-400/90 text-sm block">
-                📚 {lesson.briefing.prerequisite}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/*
-          Learning Guidance
-          ----------------------------------------------------------------
-          Provides direction on how learners should approach the
-          module and encourages interaction with the exploration
-          system before attempting verification.
-        */}
-        <div className="mt-auto pt-8 border-t border-neutral-900">
-          <p className="text-sm text-neutral-400 mb-4 leading-relaxed">
-            To understand how this system fails and scales, we need to inspect
-            the individual architectural components.
-          </p>
-
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-violet-500/10 border border-violet-500/20 rounded-lg text-violet-300 text-xs font-medium animate-pulse">
-            <span className="h-2 w-2 rounded-full bg-violet-400" />
-            Explore components on the right to continue
-          </div>
-        </div>
-      </section>
-
-      {/*
-        Interactive Sandbox
-        ----------------------------------------------------------------
-        The practical learning area where learners investigate
-        individual architectural components.
-
-        This pane focuses on:
-        - Discovery
-        - Exploration
-        - Knowledge application
-      */}
-      <section className={`${styles.sandboxPane} custom-scrollbar`}>
-        {/*
-          Architecture Exploration Grid
-          --------------------------------------------------------------
-          Each card represents a system component that can be inspected.
-
-          Visual States:
-          - Default  : Not explored
-          - Viewed   : Previously inspected
-          - Selected : Currently open
-
-          Exploration progress is tracked independently from
-          navigation order.
-        */}
-        <div className={styles.cardGrid}>
+        {/* Interactive Circles Grid */}
+        <div className={styles.interactiveNodes}>
           {lesson.steps.map((step, idx) => {
-            /*
-             * Visual State Resolution
-             * ----------------------------------------------------------
-             * Selected state takes precedence over viewed state since
-             * learners may revisit components multiple times.
-             */
             const isSelected = selectedStepIndex === idx;
             const isViewed = viewedSteps.has(idx);
-
-            let cardClasses = styles.interactiveCard;
-
-            if (isSelected) {
-              cardClasses += ` ${styles.cardSelected}`;
-            } else if (isViewed) {
-              cardClasses += ` ${styles.cardViewed}`;
-            }
 
             return (
               <div
                 key={idx}
                 onClick={() => handleStepClick(idx)}
-                className={cardClasses}
+                className={`${styles.nodeCircle} ${isSelected ? styles.nodeSelected : ""}`}
               >
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`text-[10px] font-bold uppercase tracking-wider ${
-                      isSelected ? "text-violet-400" : "text-neutral-500"
-                    }`}
-                  >
-                    {step.label}
-                  </span>
+                <IconRenderer type={step.icon} />
+                <span className={styles.nodeSubtitle}>{step.subtitle}</span>
 
-                  {isViewed && (
-                    <span className="text-emerald-500 text-xs font-bold">
-                      ✓
-                    </span>
-                  )}
-                </div>
-
-                <h3 className="font-semibold text-white text-lg leading-tight">
-                  {step.subtitle}
-                </h3>
+                {/* The NetAcad Checkmark Badge */}
+                {isViewed && (
+                  <div className={styles.checkBadge}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                )}
               </div>
             );
           })}
         </div>
 
-        {/*
-          Deep-Dive Inspection Panel
-          --------------------------------------------------------------
-          Displays detailed information for the selected component.
-
-          This area transitions learners from high-level concepts
-          into implementation details and system behavior.
-        */}
-        {selectedStepIndex !== null && (
-          <div className={styles.revealPanel}>
-            <div className="flex items-center gap-3 mb-6 border-b border-neutral-800 pb-4">
-              <span className="bg-neutral-800 text-neutral-300 px-3 py-1.5 rounded-md font-mono text-xs">
-                Inspect
-              </span>
-
-              <h3 className="text-xl font-bold text-white">
+        {/* Explanation Reveal Area */}
+        {selectedStepIndex !== null ? (
+          <div className={styles.revealArea}>
+            <div className="w-full text-left">
+              <h3 className="text-2xl font-bold text-white mb-4">
                 {lesson.steps[selectedStepIndex].subtitle}
               </h3>
-            </div>
 
-            {/*
-              Optional Visual Reference
-              ----------------------------------------------------------
-              Reserved area for diagrams, architecture visuals,
-              flowcharts, or supporting illustrations.
-            */}
-            {lesson.steps[selectedStepIndex].imageUrl && (
-              <div className="w-full h-48 bg-black border border-neutral-800 rounded-lg mb-6 flex items-center justify-center text-neutral-600 font-mono text-sm">
-                [Image / Diagram Area:{" "}
-                {lesson.steps[selectedStepIndex].imageUrl}]
+              {/* Markdown Content */}
+              <div className="text-neutral-300 leading-relaxed text-lg whitespace-pre-wrap">
+                {lesson.steps[selectedStepIndex].markdownContent}
               </div>
-            )}
 
-            <div className="text-neutral-300 leading-relaxed whitespace-pre-wrap font-medium">
-              {lesson.steps[selectedStepIndex].markdownContent}
+              {/* Code Snippet Block (Only renders if the mock data has one!) */}
+              {lesson.steps[selectedStepIndex].codeSnippet && (
+                <div className="mt-8 bg-[#070708] rounded-xl border border-neutral-800 overflow-hidden shadow-lg">
+                  <div className="bg-neutral-900/50 px-4 py-2 border-b border-neutral-800 flex items-center gap-2">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                    </div>
+                    <span className="text-[10px] font-mono text-neutral-500 ml-2 uppercase">
+                      Proof of Concept
+                    </span>
+                  </div>
+                  <pre className="p-5 overflow-x-auto custom-scrollbar">
+                    <code className="text-sm font-mono text-emerald-400/90 whitespace-pre-wrap">
+                      {lesson.steps[selectedStepIndex].codeSnippet}
+                    </code>
+                  </pre>
+                </div>
+              )}
             </div>
+          </div>
+        ) : (
+          <div
+            className={`${styles.revealArea} opacity-50 justify-center items-center`}
+          >
+            <p className="text-neutral-500 font-medium text-center">
+              Click a node above to explore its details.
+            </p>
           </div>
         )}
 
-        {/*
-          Knowledge Verification Gate
-          --------------------------------------------------------------
-          Becomes available only after every lesson component
-          has been explored.
-
-          This prevents learners from skipping directly to the
-          assessment without reviewing the lesson material.
-        */}
+        {/* Challenge Block (Unlocks when all nodes are clicked) */}
         {hasCompletedAllSteps && (
           <div className={styles.challengeContainer}>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 text-center">
               <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">
-                Final Verification
+                Knowledge Check
               </span>
-
               <h2 className="text-2xl font-black text-white">
-                Apply Your Knowledge
+                Verify Your Understanding
               </h2>
             </div>
 
-            <div className={styles.panelWrapper}>
-              <div className={styles.panelLine} />
+            <ExercisePanel
+              exercise={lesson.exercise}
+              onCorrect={() => setSolved(true)}
+              unlocked={hasCompletedAllSteps}
+            />
 
-              {/*
-                Interactive Assessment
-                ------------------------------------------------------
-                Evaluates whether learners can apply concepts
-                learned throughout the module.
-
-                Successful completion unlocks progression to
-                the next lesson.
-              */}
-              <ExercisePanel
-                exercise={lesson.exercise}
-                onCorrect={() => setSolved(true)}
-                unlocked={hasCompletedAllSteps}
-              />
-            </div>
-
-            {/*
-              Module Completion State
-              ------------------------------------------------------
-              Triggered after successfully passing the exercise.
-
-              Depending on lesson position:
-              - Unlocks the next module
-              - Marks the entire learning track as complete
-            */}
             {solved && (
-              <div className={styles.successBox}>
-                <div>
-                  <p className="text-emerald-400 font-bold flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                    Concept Mastered
-                  </p>
-                </div>
+              <div className="bg-emerald-900/20 border border-emerald-500/30 p-6 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6 animate-in zoom-in-95 mt-4 mb-16">
+                <p className="text-emerald-400 font-bold flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  Module Mastered
+                </p>
 
                 {!isLast ? (
                   <button
                     onClick={onNext}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                   >
-                    Next Module →
+                    Next Lesson →
                   </button>
                 ) : (
-                  <span className="text-sm font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-4 py-2 rounded-lg">
+                  <span className="text-sm font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 px-6 py-3 rounded-xl">
                     Track Complete 🎉
                   </span>
                 )}
@@ -359,7 +270,7 @@ export default function LessonContent({ lesson, onNext, isLast }: Props) {
             )}
           </div>
         )}
-      </section>
+      </div>
     </div>
   );
 }
