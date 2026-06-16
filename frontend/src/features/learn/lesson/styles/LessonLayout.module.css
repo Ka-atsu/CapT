@@ -1,0 +1,27 @@
+.slideWrapper {
+  width: 100%;
+  min-height: 100%;
+  padding: 48px 32px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background: #0b0b0c;
+}
+
+.slideContent {
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}

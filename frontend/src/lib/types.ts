@@ -1,3 +1,5 @@
+import type { IconType } from "@/lib/icons/iconRegistry";
+
 export type MultipleChoiceExercise = {
   type: "multiple-choice";
   prompt: string;
@@ -11,32 +13,23 @@ export type FillBlankExercise = {
   answer: string;
 };
 
-// Define the shape of a single interactive component/step
-export type LessonStep = {
-  label: string;
-  subtitle: string;
-  markdownContent: string;
-  imageUrl?: string;
-  codeSnippet?: string;
-  icon?: "user" | "network" | "bank" | "server" | "shield"; // NEW: Icon identifier for the interactive circles
-};
+export type Exercise = MultipleChoiceExercise | FillBlankExercise;
 
-// Define the introductory meta-data
 export type Briefing = {
   coreConcept: string;
   latencyImpact: string;
   prerequisite: string;
 };
 
-// Define the final challenge
-export type Exercise = {
-  type: "multiple-choice" | "fill-blank";
-  prompt: string;
-  options?: string[];
-  answer: number | string;
+export type LessonStep = {
+  label: string;
+  subtitle: string;
+  markdownContent: string;
+  imageUrl?: string;
+  codeSnippet?: string;
+  icon?: IconType;
 };
 
-// The main Lesson object
 export type Lesson = {
   id: number | string;
   title: string;

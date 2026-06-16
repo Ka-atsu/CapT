@@ -1,0 +1,33 @@
+.markdownBody {
+  color: #d4d4d4;
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.markdownBody p {
+  margin-bottom: 2rem;
+}
+
+.markdownBody h3 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+
+.markdownBody ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+.markdownBody li {
+  margin-bottom: 1rem;
+}
+
+.markdownBody strong {
+  color: #34d399;
+}
+
+.markdownImage {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 3rem 0;
+}

@@ -1,39 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import LessonSidebar from "./LessonSidebar";
 import LessonContent from "./LessonContent";
-import { mockLessons } from "@/lib/mockLessons";
+import { curriculumRegistry, TrackKey } from "@/lib/registry";
 
-export default function LessonPage() {
-  /*
-   * The currently selected lesson acts as the single source of truth
-   * for the learning workspace. Both the sidebar navigation and the
-   * content area derive their state from this value.
-   */
-  const [currentId, setCurrentId] = useState(mockLessons[0].id);
+// We extract the actual workspace logic into a sub-component so we can wrap it in Suspense
+function LessonWorkspace() {
+  const searchParams = useSearchParams();
 
-  /*
-   * Derive lesson-specific metadata from the active lesson id.
-   * Keeping these values computed rather than stored avoids
-   * unnecessary state duplication and synchronization issues.
-   */
-  const currentLesson = mockLessons.find((l) => l.id === currentId)!;
-  const currentIndex = mockLessons.findIndex((l) => l.id === currentId);
+  // 1. Grab the track from the URL. If it doesn't exist, default to cs-foundations
+  const trackParam = searchParams.get("track") as TrackKey;
+  const trackKey =
+    trackParam && curriculumRegistry[trackParam]
+      ? trackParam
+      : "cs-foundations";
 
-  /*
-   * Progress is calculated dynamically based on the learner's
-   * current position within the lesson sequence.
-   */
-  const progress = Math.round(((currentIndex + 1) / mockLessons.length) * 100);
+  // 2. Load the correct curriculum data array from our registry
+  const activeCurriculum = curriculumRegistry[trackKey];
 
-  /*
-   * Advances the learner to the next lesson in the course.
-   * Boundary protection prevents navigation beyond the final lesson.
-   */
+  const [currentId, setCurrentId] = useState(activeCurriculum[0].id);
+
+  // 3. If the user clicks a different track from the TopicPage, reset to the first lesson
+  useEffect(() => {
+    setCurrentId(activeCurriculum[0].id);
+  }, [trackKey, activeCurriculum]);
+
+  // Safety fallback to ensure we always have a valid lesson object
+  const currentLesson =
+    activeCurriculum.find((l) => l.id === currentId) || activeCurriculum[0];
+  const currentIndex = activeCurriculum.findIndex((l) => l.id === currentId);
+
+  const progress = Math.round(
+    ((currentIndex + 1) / activeCurriculum.length) * 100,
+  );
+
   const handleNext = () => {
-    const next = mockLessons[currentIndex + 1];
-
+    const next = activeCurriculum[currentIndex + 1];
     if (next) {
       setCurrentId(next.id);
     }
@@ -41,48 +45,36 @@ export default function LessonPage() {
 
   return (
     <div className="flex h-full w-full bg-[#070708] border-t border-neutral-900 overflow-hidden select-none">
-      {/*
-        Course Navigation
-        ------------------------------------------------------------
-        Provides lesson discovery, lesson switching, and progress
-        visibility. The sidebar does not manage lesson state itself;
-        it simply reflects and updates the state owned by LessonPage.
-      */}
       <LessonSidebar
-        lessons={mockLessons}
+        lessons={activeCurriculum} // Pass the dynamic array to the sidebar
         currentId={currentId}
         onSelect={setCurrentId}
         progress={progress}
       />
 
-      {/*
-        Learning Workspace
-        ------------------------------------------------------------
-        Dedicated content area where lesson material is displayed.
-        Occupies all remaining horizontal space after the sidebar.
-      */}
       <main className="flex-1 flex overflow-hidden bg-[#0B0B0C]">
         <LessonContent
-          /*
-            Component Reset Strategy
-            --------------------------------------------------------
-            Using the lesson id as a React key forces LessonContent
-            to fully remount whenever the learner switches lessons.
-
-            Benefits:
-            - Resets scroll position
-            - Clears local component state
-            - Ensures each lesson starts from a clean view
-
-            Without this key, React would reuse the existing
-            component instance and preserve internal state.
-          */
           key={currentLesson.id}
           lesson={currentLesson}
           onNext={handleNext}
-          isLast={currentIndex === mockLessons.length - 1}
+          isLast={currentIndex === activeCurriculum.length - 1}
         />
       </main>
     </div>
+  );
+}
+
+// Next.js requires useSearchParams() to be wrapped in a Suspense boundary
+export default function LessonPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-full w-full flex items-center justify-center bg-[#070708] text-violet-400 font-mono text-sm animate-pulse">
+          Initializing Workspace...
+        </div>
+      }
+    >
+      <LessonWorkspace />
+    </Suspense>
   );
 }
