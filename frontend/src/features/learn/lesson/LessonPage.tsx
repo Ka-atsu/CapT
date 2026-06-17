@@ -52,7 +52,7 @@ function LessonWorkspace() {
         progress={progress}
       />
 
-      <main className="flex-1 flex overflow-hidden bg-[#0B0B0C]">
+      <main className="flex-1 flex overflow-hidden bg-[#0B0B0C] p-8!">
         <LessonContent
           key={currentLesson.id}
           lesson={currentLesson}

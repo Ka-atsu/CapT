@@ -13,17 +13,17 @@ export default function LessonHeader({ lesson }: Props) {
       </h1>
 
       {lesson.briefing && (
-        <div className="flex justify-center gap-6 mt-2">
+        <div className="flex justify-center gap-6 mt-2!">
           <p className="text-sm text-neutral-400 border border-neutral-800 px-4! py-2! rounded-full">
             Core Concept:
-            <span className="ml-2 text-violet-400 font-bold">
+            <span className="ml-2! text-violet-400 font-bold">
               {lesson.briefing.coreConcept}
             </span>
           </p>
 
           <p className="text-sm text-neutral-400 border border-neutral-800 px-4! py-2! rounded-full">
             Impact:
-            <span className="ml-2 text-emerald-400 font-bold">
+            <span className="ml-2! text-emerald-400 font-bold">
               {lesson.briefing.latencyImpact}
             </span>
           </p>

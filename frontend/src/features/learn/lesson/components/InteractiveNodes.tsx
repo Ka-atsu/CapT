@@ -21,7 +21,7 @@ export default function InteractiveNodes({
   onSelect,
 }: Props) {
   return (
-    <div className="flex flex-wrap justify-center gap-12 my-8">
+    <div className="flex flex-wrap justify-center gap-12 my-8!">
       {steps.map((step, idx) => {
         const selected = selectedStepIndex === idx;
         const viewed = viewedSteps.has(idx);

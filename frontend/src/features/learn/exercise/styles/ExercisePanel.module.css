@@ -3,8 +3,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 32px; /* Large space between question and options */
-  padding: 8px 0;
+  gap: 32px;
 }
 
 .header {
@@ -16,8 +15,9 @@
 .label {
   font-size: 11px;
   font-weight: 700;
-  color: #737373; /* neutral-500 */
+  color: #737373;
   letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .prompt {
@@ -30,12 +30,12 @@
 .optionsList {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Plenty of space between each button */
+  gap: 16px;
 }
 
 .optionButton {
   text-align: left;
-  padding: 20px 24px; /* Massive padding to make them tall and readable */
+  padding: 20px 24px;
   border-radius: 12px;
   background-color: rgba(20, 20, 22, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -43,8 +43,6 @@
   font-size: 15px;
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
 }
 
 .optionButton:hover:not(:disabled) {
@@ -53,12 +51,7 @@
 }
 
 .optionSelected {
-  background-color: rgba(
-    124,
-    58,
-    237,
-    0.15
-  ) !important; /* violet-600 with opacity */
+  background-color: rgba(124, 58, 237, 0.15) !important;
   border-color: rgba(124, 58, 237, 0.5) !important;
   color: #fff;
 }
@@ -76,7 +69,7 @@
 
 .inputField:focus {
   outline: none;
-  border-color: #7c3aed; /* violet-600 */
+  border-color: #7c3aed;
   background-color: rgba(124, 58, 237, 0.05);
 }
 
@@ -90,7 +83,7 @@
 .submitBtn {
   padding: 14px 32px;
   border-radius: 12px;
-  background-color: #7c3aed; /* violet-600 */
+  background-color: #7c3aed;
   color: white;
   font-weight: 700;
   font-size: 14px;
@@ -100,7 +93,7 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-  background-color: #6d28d9; /* violet-700 */
+  background-color: #6d28d9;
 }
 
 .submitBtn:disabled {
@@ -109,7 +102,7 @@
 }
 
 .errorMessage {
-  color: #ef4444; /* red-500 */
+  color: #ef4444;
   font-size: 13px;
   font-weight: 500;
 }

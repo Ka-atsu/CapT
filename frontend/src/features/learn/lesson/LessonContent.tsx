@@ -51,9 +51,11 @@ export default function LessonContent({ lesson, onNext, isLast }: Props) {
 
   const hasCompletedAllSteps = viewedSteps.size === lesson.steps.length;
 
+  // In LessonContent.tsx
   return (
-    <div className="h-full w-full overflow-y-auto custom-scrollbar bg-[#0b0b0c] px-8! py-12! flex justify-center">
-      <div className="w-full max-w-380 flex flex-col gap-12">
+    <div className="h-full w-full overflow-y-auto custom-scrollbar bg-[#0b0b0c] flex justify-center">
+      {/* Add pb-16! to the scroll container */}
+      <div className="w-full max-w-380 flex flex-col gap-12!">
         <LessonHeader lesson={lesson} />
 
         <InteractiveNodes

@@ -1,6 +1,8 @@
 // src/lib/registry.ts
 import { csFundamentals } from "./csFundamentals";
 import { fullStackEngineering } from "./fullStackEngineering";
+import { testingAndQuality } from "./testingAndQuality";
+import { realTimeIoT } from "./realTimeIoT";
 import { Lesson } from "./types";
 
 // 1. Define what a Track looks like in our master catalog
@@ -32,6 +34,24 @@ export const courseCatalog: TrackDefinition[] = [
     category: "Software Engineering",
     difficulty: "Intermediate",
     lessons: fullStackEngineering,
+  },
+  {
+    id: "testing-and-quality",
+    title: "Testing & Automated Quality",
+    description:
+      "Build confidence through verification-first design. Master Test-Driven Development, integration testing, CI/CD pipelines, and automated quality gates.",
+    category: "Software Engineering",
+    difficulty: "Advanced",
+    lessons: testingAndQuality,
+  },
+  {
+    id: "real-time-iot",
+    title: "Real-Time Processing & IoT",
+    description:
+      "Configure hardware interrupts, design circular buffer telemetry, implement lightweight IoT protocols, and architect edge-autonomous devices for years-long battery deployment.",
+    category: "Hardware-Software Integration",
+    difficulty: "Advanced",
+    lessons: realTimeIoT,
   },
 ];
 
