@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 import type { Lesson } from "@/lib/types";
 import type { IconType } from "@/lib/icons/iconRegistry";
 
-import LessonHeader from "./components/LessonHeader";
-import InteractiveNodes, { Step } from "./components/InteractiveNodes";
-import RevealPanel from "./components/RevealPanel";
-import ChallengeSection from "./components/ChallengeSection";
-import EmptyState from "./components/EmptyState";
+// Group 1: Lesson Layout & Structure Components
+import {
+  LessonHeader,
+  InteractiveNodes,
+  ChallengeSection,
+  type Step,
+} from "./components/LessonStructure";
+
+// Group 2: Content Reveal Components
+import RevealPanel, { EmptyState } from "./components/RevealPanel";
 
 type Props = {
   lesson: Lesson;
@@ -51,10 +56,8 @@ export default function LessonContent({ lesson, onNext, isLast }: Props) {
 
   const hasCompletedAllSteps = viewedSteps.size === lesson.steps.length;
 
-  // In LessonContent.tsx
   return (
     <div className="h-full w-full overflow-y-auto custom-scrollbar bg-[#0b0b0c] flex justify-center">
-      {/* Add pb-16! to the scroll container */}
       <div className="w-full max-w-380 flex flex-col gap-12!">
         <LessonHeader lesson={lesson} />
 

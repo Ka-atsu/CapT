@@ -2,10 +2,11 @@ import ProgressBar from "@/components/ProgressBar";
 import { Lesson } from "@/lib/types";
 import styles from "./styles/LessonSidebar.module.css";
 
+// Inside your LessonSidebar component file:
 type Props = {
   lessons: Lesson[];
-  currentId: string | number;
-  onSelect: (id: string | number) => void;
+  currentId: string;
+  onSelect: (id: string) => void; // Change from string | number to string
   progress: number;
 };
 

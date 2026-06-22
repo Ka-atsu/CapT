@@ -16,24 +16,29 @@ export type FillBlankExercise = {
 export type Exercise = MultipleChoiceExercise | FillBlankExercise;
 
 export type Briefing = {
-  coreConcept: string;
-  latencyImpact: string;
-  prerequisite: string;
+  description: string;
+  realWorldAnalogy: string;
+  usedByText: string;
+  usedByCompany: string;
 };
 
 export type LessonStep = {
   label: string;
   subtitle: string;
+  icon: IconType;
   markdownContent: string;
-  imageUrl?: string;
   codeSnippet?: string;
-  icon?: IconType;
 };
 
 export type Lesson = {
-  id: number | string;
+  id: string; // Uniform string tracking
   title: string;
-  briefing?: Briefing;
+  briefing: Briefing;
   steps: LessonStep[];
-  exercise: Exercise;
+  exercise: {
+    type: "fill-blank" | "multiple-choice";
+    prompt: string;
+    options?: string[];
+    answer: string | number;
+  };
 };

@@ -1,62 +1,78 @@
 // src/lib/registry.ts
 import { csFundamentals } from "./csFundamentals";
-import { fullStackEngineering } from "./fullStackEngineering";
-import { testingAndQuality } from "./testingAndQuality";
-import { realTimeIoT } from "./realTimeIoT";
+import { advancedDataStructures } from "./advancedDataStructures";
+import { systemArchitecture } from "./systemArchitecture";
+import { advancedAlgorithms } from "./advancedAlgorithms";
+import { lowLevelComputing } from "./lowLevelComputing";
+import { softwareEngineering } from "./softwareEngineering";
 import { Lesson } from "./types";
 
-// 1. Define what a Track looks like in our master catalog
 export type TrackDefinition = {
-  id: string; // This will be used for the URL parameter!
+  id: string;
   title: string;
   description: string;
   category: string;
   difficulty: "Beginner" | "Intermediate" | "Advanced";
-  lessons: Lesson[]; // The actual curriculum array
+  lessons: Lesson[];
 };
 
-// 2. Build the Master Catalog
 export const courseCatalog: TrackDefinition[] = [
   {
     id: "cs-foundations",
     title: "Computer Science Foundations",
     description:
-      "A robust introduction to software architecture. Learn variable lifecycles, performance bounds, network interoperability, and programming paradigms.",
+      "A robust introduction to software architecture. Learn Big-O complexity, variable memory layouts, and linear data structures.",
     category: "Computer Science",
     difficulty: "Beginner",
     lessons: csFundamentals,
   },
   {
-    id: "full-stack-engineering",
-    title: "Full-Stack Systems Engineering",
+    id: "advanced-data-structures",
+    title: "Advanced Data Structures",
     description:
-      "Master component-driven UI architecture, backend routing runtimes, persistent database modeling, and enterprise deployment workflows.",
-    category: "Software Engineering",
+      "Master the architectures that map the real world. Learn Trees, Priority Queues, Enterprise Sorting Algorithms, and Graph Networks.",
+    category: "Computer Science",
     difficulty: "Intermediate",
-    lessons: fullStackEngineering,
+    lessons: advancedDataStructures,
   },
   {
-    id: "testing-and-quality",
-    title: "Testing & Automated Quality",
+    id: "system-architecture",
+    title: "Systems & Advanced Architecture",
     description:
-      "Build confidence through verification-first design. Master Test-Driven Development, integration testing, CI/CD pipelines, and automated quality gates.",
-    category: "Software Engineering",
+      "Move from single functions to entire systems. Learn Dynamic Programming, Concurrency, Hardware Caching, and Network Protocols.",
+    category: "Computer Science",
     difficulty: "Advanced",
-    lessons: testingAndQuality,
+    lessons: systemArchitecture,
   },
   {
-    id: "real-time-iot",
-    title: "Real-Time Processing & IoT",
+    id: "advanced-algorithms",
+    title: "Math & Advanced Algorithms",
     description:
-      "Configure hardware interrupts, design circular buffer telemetry, implement lightweight IoT protocols, and architect edge-autonomous devices for years-long battery deployment.",
-    category: "Hardware-Software Integration",
+      "Bitwise logic, NP-Completeness, and mathematical combinatorics.",
+    category: "Algorithms",
     difficulty: "Advanced",
-    lessons: realTimeIoT,
+    lessons: advancedAlgorithms,
+  },
+  {
+    id: "low-level-computing",
+    title: "Low-Level Computing",
+    description:
+      "Understand how the CPU actually reads 1s and 0s, Floating Points, and Endianness.",
+    category: "Hardware",
+    difficulty: "Advanced",
+    lessons: lowLevelComputing,
+  },
+  {
+    id: "software-engineering",
+    title: "Software Engineering Practices",
+    description:
+      "Industry standards for writing testable code and structural design patterns.",
+    category: "Architecture",
+    difficulty: "Intermediate",
+    lessons: softwareEngineering,
   },
 ];
 
-// 3. Keep the simple registry object so our LessonPage doesn't break!
-// This automatically maps {"cs-foundations": csFundamentals, ...} behind the scenes.
 export const curriculumRegistry: Record<string, Lesson[]> =
   courseCatalog.reduce(
     (acc, track) => {
